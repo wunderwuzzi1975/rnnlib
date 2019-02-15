@@ -1,6 +1,10 @@
 cmake_minimum_required (VERSION 2.6)
 project (rnnlib)
 
+IF(CMAKE_VERSION VERSION_EQUAL "3.0.0" OR CMAKE_VERSION VERSION_GREATER "3.0.0")
+     CMAKE_POLICY(SET CMP0045 OLD)
+ENDIF()
+
 execute_process ( COMMAND git submodule update --init boost )
 
 SET ( PREFER_MKL "FALSE" CACHE BOOLEAN "Whether to link against Intel's MKL or OpenBlas" )
@@ -14,7 +18,7 @@ set( CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${CMAKE_SOURCE_DIR}/install/lib )
 FIND_LIBRARY(openblas_LIB NAMES libopenblas.a openblas PATHS install/lib NO_DEFAULT_PATH)
 IF(NOT openblas_LIB)
        execute_process ( COMMAND git submodule update --init openblas )
-       execute_process ( COMMAND make  NO_LAPACKE=1 NO_SHARED=1
+       execute_process ( COMMAND make TARGET=HASWELL NO_LAPACKE=1 NO_SHARED=1
                        WORKING_DIRECTORY openblas )
        execute_process ( COMMAND make install NO_SHARED=1 NO_LAPACKE=1 PREFIX=${CMAKE_SOURCE_DIR}/install
                        WORKING_DIRECTORY openblas )
