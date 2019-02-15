@@ -131,7 +131,7 @@ struct GradientCheck {
               (real_t)ceil(log10(min(fabs(algoDeriv), fabs(numericDeriv))))) -
               (int)sigFigs);
       real_t diff = fabs(numericDeriv - algoDeriv);
-      bool wrong = (isnan(diff) || diff > threshold);
+      bool wrong = (std::isnan(diff) || diff > threshold);
       if (verbose || wrong) {
         out << "weight " << index << " numeric deriv " << numericDeriv
             << " algorithmic deriv " << algoDeriv << endl;
